@@ -57,7 +57,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
       "Action": [
         "s3:GetBucketVersioning"
       ],
-      "Resource": "${var.s3_bucket_arn}"
+      "Resource": "*"
     },
     {
       "Effect":"Allow",
