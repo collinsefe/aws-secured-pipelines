@@ -50,7 +50,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
         "s3:PutObjectAcl",
         "s3:PutObject"
       ],
-      "Resource": "${var.s3_bucket_arn}/*"
+      "Resource": *
     },
     {
       "Effect":"Allow",
@@ -58,6 +58,13 @@ resource "aws_iam_policy" "codepipeline_policy" {
         "s3:GetBucketVersioning"
       ],
       "Resource": "${var.s3_bucket_arn}"
+    },
+    {
+      "Effect":"Allow",
+      "Action": [
+        "ec2:*"
+      ],
+      "Resource": "*"
     },
     {
       "Effect": "Allow",
@@ -126,3 +133,5 @@ resource "aws_iam_role_policy_attachment" "codepipeline_role_attach" {
   role       = aws_iam_role.codepipeline_role[0].name
   policy_arn = aws_iam_policy.codepipeline_policy[0].arn
 }
+
+
