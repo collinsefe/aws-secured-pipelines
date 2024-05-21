@@ -33,5 +33,8 @@ jobs:
     steps:
       - name: Terraform Version
         run: terraform version
-
+      - name: Terraform fmt and validate
+        run: |
+          terraform fmt
+          terraform validate
     
