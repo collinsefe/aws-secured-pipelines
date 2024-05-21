@@ -28,18 +28,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: What is today's date? 
         run: date "+%H:%M:%S   %d/%m/%y"
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Terraform Version
+        run: terraformf version
 
-      # Runs a set of commands using the runners shell
-      - name: List files in Directory
-        run: |
-          terraform version
-          terraform init
-
-      # Runs a single command using the runners shell
-      - name: What is today's date? 
-        run: terraform plan
-
-
-      # Runs a single command using the runners shell
-      - name: What is today's date? 
-        run: terraform apply
+    
