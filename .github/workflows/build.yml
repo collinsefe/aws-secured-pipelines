@@ -27,7 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: What is today's date? 
-        run: Date
+        run: time
 
       # Runs a set of commands using the runners shell
       - name: List files in Directory
