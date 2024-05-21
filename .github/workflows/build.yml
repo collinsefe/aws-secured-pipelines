@@ -32,6 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Terraform Version
-        run: terraformf version
+        run: terraform version
 
     
