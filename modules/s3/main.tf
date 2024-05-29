@@ -73,7 +73,7 @@ resource "aws_iam_role_policy_attachment" "replication_s3_role_attach" {
 #Replication bucket
 resource "aws_s3_bucket" "replication_bucket" {
   provider      = aws.replication
-  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-rpl"
+  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-replication"
 }
 
 resource "aws_s3_bucket_public_access_block" "replication_bucket_access" {
@@ -117,43 +117,43 @@ data "aws_iam_policy_document" "bucket_policy_doc_replication_bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "replication_bucket_acl" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.id
-  acl      = "private"
-}
+# resource "aws_s3_bucket_acl" "replication_bucket_acl" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.id
+#   acl      = "private"
+# }
 
-resource "aws_s3_bucket_versioning" "replication_bucket_versioning" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+# resource "aws_s3_bucket_versioning" "replication_bucket_versioning" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.id
+#   versioning_configuration {
+#     status = "Enabled"
+#   }
+# }
 
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "replication_bucket_encryption" {
-  provider = aws.replication
-  bucket   = aws_s3_bucket.replication_bucket.bucket
+# resource "aws_s3_bucket_server_side_encryption_configuration" "replication_bucket_encryption" {
+#   provider = aws.replication
+#   bucket   = aws_s3_bucket.replication_bucket.bucket
 
-  rule {
-    apply_server_side_encryption_by_default {
-      kms_master_key_id = var.kms_key_arn
-      sse_algorithm     = "aws:kms"
-    }
-  }
-}
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       kms_master_key_id = var.kms_key_arn
+#       sse_algorithm     = "aws:kms"
+#     }
+#   }
+# }
 
-resource "aws_s3_bucket_logging" "replication_bucket_logging" {
-  provider      = aws.replication
-  bucket        = aws_s3_bucket.replication_bucket.id
-  target_bucket = aws_s3_bucket.replication_bucket.id
-  target_prefix = "log/"
-}
+# resource "aws_s3_bucket_logging" "replication_bucket_logging" {
+#   provider      = aws.replication
+#   bucket        = aws_s3_bucket.replication_bucket.id
+#   target_bucket = aws_s3_bucket.replication_bucket.id
+#   target_prefix = "log/"
+# }
 
 #Artifact Bucket
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket_prefix = regex("[a-z0-9.-]+", lower(var.project_name))
+  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-pipeline"
   tags          = var.tags
   force_destroy = true
 }
@@ -196,10 +196,12 @@ data "aws_iam_policy_document" "bucket_policy_doc_codepipeline_bucket" {
   }
 }
 
-resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
-  bucket = aws_s3_bucket.codepipeline_bucket.id
-  acl    = "private"
-}
+
+# resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
+#   bucket = aws_s3_bucket.codepipeline_bucket.id
+#   acl    = "private"
+# }
+
 
 resource "aws_s3_bucket_versioning" "codepipeline_bucket_versioning" {
   bucket = aws_s3_bucket.codepipeline_bucket.id
@@ -220,34 +222,35 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "codepipeline_buck
   }
 }
 
+
 resource "aws_s3_bucket_logging" "codepipeline_bucket_logging" {
   bucket        = aws_s3_bucket.codepipeline_bucket.id
   target_bucket = aws_s3_bucket.codepipeline_bucket.id
   target_prefix = "log/"
 }
 
-resource "aws_s3_bucket_replication_configuration" "replication_config" {
-  #provider = aws.replication
-  # Must have bucket versioning enabled first
-  depends_on = [aws_s3_bucket_versioning.codepipeline_bucket_versioning]
+# resource "aws_s3_bucket_replication_configuration" "replication_config" {
+#   provider = aws.replication
+#   # Must have bucket versioning enabled first
+#   depends_on = [aws_s3_bucket_versioning.codepipeline_bucket_versioning]
 
-  role   = aws_iam_role.replication_s3_role.arn
-  bucket = aws_s3_bucket.codepipeline_bucket.id
+#   role   = aws_iam_role.replication_s3_role.arn
+#   bucket = aws_s3_bucket.codepipeline_bucket.id
 
-  rule {
-    id = "${var.project_name}-replication-rule"
+#   rule {
+#     id = "${var.project_name}-replication-rule"
 
-    filter {}
+#     filter {}
 
-    delete_marker_replication {
-      status = "Enabled"
-    }
+#     delete_marker_replication {
+#       status = "Enabled"
+#     }
 
-    status = "Enabled"
+#     status = "Enabled"
 
-    destination {
-      bucket        = aws_s3_bucket.replication_bucket.arn
-      storage_class = "STANDARD"
-    }
-  }
-}
+#     destination {
+#       bucket        = aws_s3_bucket.replication_bucket.arn
+#       storage_class = "STANDARD"
+#     }
+#   }
+# }

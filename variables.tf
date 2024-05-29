@@ -86,3 +86,16 @@ variable "build_project_source" {
   type        = string
   default     = "CODEPIPELINE"
 }
+
+variable "source_provider" {
+  description = "Provider type for Source stage e.g. GitHub, CodeCommit, BitBucket"
+  type        = string
+  default = "Bitbucket"
+}
+
+variable "codestar_name" {
+  description = "Name for codestar connection"
+  type        = string
+  default = "BitBucketConnection"
+}
+

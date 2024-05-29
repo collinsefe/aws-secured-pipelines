@@ -1,9 +1,3 @@
-#This solution, non-production-ready template describes AWS Codepipeline based CICD Pipeline for terraform code deployment.
-#© 2023 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.
-#This AWS Content is provided subject to the terms of the AWS Customer Agreement available at
-#http://aws.amazon.com/agreement or other written agreement between Customer and either
-#Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
-
 resource "aws_iam_role" "codepipeline_role" {
   count              = var.create_new_role ? 1 : 0
   name               = var.codepipeline_iam_role_name
@@ -50,21 +44,14 @@ resource "aws_iam_policy" "codepipeline_policy" {
         "s3:PutObjectAcl",
         "s3:PutObject"
       ],
-      "Resource": *
+      "Resource": "${var.s3_bucket_arn}/*"
     },
     {
       "Effect":"Allow",
       "Action": [
         "s3:GetBucketVersioning"
       ],
-      "Resource": "*"
-    },
-    {
-      "Effect":"Allow",
-      "Action": [
-        "ec2:*"
-      ],
-      "Resource": "*"
+      "Resource": "${var.s3_bucket_arn}"
     },
     {
       "Effect": "Allow",
@@ -115,6 +102,10 @@ resource "aws_iam_policy" "codepipeline_policy" {
       "Resource": "arn:aws:codebuild:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:report-group/${var.project_name}*"
     },
     {
+        "Effect": "Allow",
+        "Action": "codestar-connections:UseConnection",
+        "Resource": "arn:aws:codestar-connections:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:connection*"},
+    {
       "Effect": "Allow",
       "Action": [
         "logs:CreateLogGroup",
@@ -133,5 +124,3 @@ resource "aws_iam_role_policy_attachment" "codepipeline_role_attach" {
   role       = aws_iam_role.codepipeline_role[0].name
   policy_arn = aws_iam_policy.codepipeline_policy[0].arn
 }
-
-

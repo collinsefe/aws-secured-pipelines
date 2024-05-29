@@ -8,7 +8,7 @@ resource "aws_codebuild_project" "terraform_codebuild_project" {
 
   count = length(var.build_projects)
 
-  name           = "${var.project_name}-${var.build_projects[count.index]}"
+  name           = "${var.project_name}-${var.build_projects[count.index]}-project"
   service_role   = var.role_arn
   encryption_key = var.kms_key_arn
   tags           = var.tags

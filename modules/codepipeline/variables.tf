@@ -43,3 +43,18 @@ variable "stages" {
   description = "List of Map containing information about the stages of the CodePipeline"
   type        = list(map(any))
 }
+
+
+variable "source_provider" {
+  description = "Provider type for Source stage e.g. GitHub, CodeCommit, BitBucket"
+  type        = string
+}
+
+
+variable "codestar_name" {
+  description = "Name for codestar connection"
+  type        = string
+}
+
+
+

@@ -33,28 +33,28 @@ module "s3_artifacts_bucket" {
 # Resources
 
 # Module for Infrastructure Source code repository
-module "codecommit_infrastructure_source_repo" {
-  source = "./modules/codecommit"
+# module "codecommit_infrastructure_source_repo" {
+#   source = "./modules/codecommit"
 
-  create_new_repo          = var.create_new_repo
-  source_repository_name   = var.source_repo_name
-  source_repository_branch = var.source_repo_branch
-  repo_approvers_arn       = var.repo_approvers_arn
-  kms_key_arn              = module.codepipeline_kms.arn
-  tags = {
-    Project_Name = var.project_name
-    Environment  = var.environment
-    Account_ID   = local.account_id
-    Region       = local.region
-  }
+#   create_new_repo          = var.create_new_repo
+#   source_repository_name   = var.source_repo_name
+#   source_repository_branch = var.source_repo_branch
+#   repo_approvers_arn       = var.repo_approvers_arn
+#   kms_key_arn              = module.codepipeline_kms.arn
+#   tags = {
+#     Project_Name = var.project_name
+#     Environment  = var.environment
+#     Account_ID   = local.account_id
+#     Region       = local.region
+#   }
 
-}
+# }
 
 # Module for Infrastructure Validation - CodeBuild
 module "codebuild_terraform" {
-  depends_on = [
-    module.codecommit_infrastructure_source_repo
-  ]
+  # depends_on = [
+  #   module.codecommit_infrastructure_source_repo
+  # ]
   source = "./modules/codebuild"
 
   project_name                        = var.project_name
@@ -117,6 +117,8 @@ module "codepipeline_terraform" {
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
   stages                = var.stage_input
   kms_key_arn           = module.codepipeline_kms.arn
+  source_provider       = var.source_provider
+  codestar_name         = var.codestar_name
   tags = {
     Project_Name = var.project_name
     Environment  = var.environment
@@ -124,3 +126,4 @@ module "codepipeline_terraform" {
     Region       = local.region
   }
 }
+
