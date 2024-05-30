@@ -53,58 +53,59 @@ resource "aws_iam_policy" "codepipeline_policy" {
       ],
       "Resource": "${var.s3_bucket_arn}"
     },
-    {
+     {
       "Effect": "Allow",
       "Action": [
-         "kms:DescribeKey",
-         "kms:GenerateDataKey*",
-         "kms:Encrypt",
-         "kms:ReEncrypt*",
-         "kms:Decrypt"
+         "iam:*"
       ],
-      "Resource": "${var.kms_key_arn}"
+      "Resource": [
+
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/*",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/*"
+      ]
     },
     {
       "Effect": "Allow",
       "Action": [
-         "codecommit:GitPull",
-         "codecommit:GitPush",
-         "codecommit:GetBranch",
-         "codecommit:CreateCommit",
-         "codecommit:ListRepositories",
-         "codecommit:BatchGetCommits",
-         "codecommit:BatchGetRepositories",
-         "codecommit:GetCommit",
-         "codecommit:GetRepository",
-         "codecommit:GetUploadArchiveStatus",
-         "codecommit:ListBranches",
-         "codecommit:UploadArchive"
+         "kms:*"
+      ],
+      "Resource": "arn:aws:kms:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+         "codecommit:*"
       ],
       "Resource": "arn:aws:codecommit:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:${var.source_repository_name}"
     },
     {
       "Effect": "Allow",
       "Action": [
-        "codebuild:BatchGetBuilds",
-        "codebuild:StartBuild",
-        "codebuild:BatchGetProjects"
+        "codebuild:*"
       ],
       "Resource": "arn:aws:codebuild:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:project/${var.project_name}*"
     },
     {
       "Effect": "Allow",
       "Action": [
-        "codebuild:CreateReportGroup",
-        "codebuild:CreateReport",
-        "codebuild:UpdateReport",
-        "codebuild:BatchPutTestCases"
+        "codebuild:*"
       ],
       "Resource": "arn:aws:codebuild:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:report-group/${var.project_name}*"
     },
     {
         "Effect": "Allow",
         "Action": "codestar-connections:UseConnection",
-        "Resource": "arn:aws:codestar-connections:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:connection*"},
+        "Resource": "arn:aws:codestar-connections:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:connection/*"
+    },
+    {
+        "Effect": "Allow",
+        "Action": "s3:*", 
+        "Resource": 
+        [
+        "arn:aws:s3:::/*",
+        "arn:aws:s3:::*"
+        ]
+    },
     {
       "Effect": "Allow",
       "Action": [

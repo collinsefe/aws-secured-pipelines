@@ -1,5 +1,5 @@
-project_name       = "wakasa"
-environment        = "sandbox"
+project_name       = "supando"
+environment        = "demo"
 source_repo_name   = "corighose/itsnwe-aws-account-001"
 source_repo_branch = "master"
 create_new_repo    = false

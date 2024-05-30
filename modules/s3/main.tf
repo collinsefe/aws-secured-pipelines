@@ -73,7 +73,7 @@ resource "aws_iam_role_policy_attachment" "replication_s3_role_attach" {
 #Replication bucket
 resource "aws_s3_bucket" "replication_bucket" {
   provider      = aws.replication
-  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-replication"
+  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-replication-"
 }
 
 resource "aws_s3_bucket_public_access_block" "replication_bucket_access" {
@@ -153,7 +153,7 @@ data "aws_iam_policy_document" "bucket_policy_doc_replication_bucket" {
 
 #Artifact Bucket
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-pipeline"
+  bucket_prefix = "${regex("[a-z0-9.-]+", lower(var.project_name))}-pipeline-"
   tags          = var.tags
   force_destroy = true
 }

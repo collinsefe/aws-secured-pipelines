@@ -34,13 +34,8 @@ resource "aws_codepipeline" "terraform_pipeline" {
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.example.arn
         FullRepositoryId = var.source_repo_name
-        BranchName       = "main"
+        BranchName       = "master"
       }
-      # configuration = {
-      #   RepositoryName       = var.source_repo_name
-      #   BranchName           = var.source_repo_branch
-      #   PollForSourceChanges = "true"
-      # }
     }
   }
 
