@@ -1,7 +1,9 @@
 terraform {
   backend "s3" {
-    bucket = "terraform-tfstate-0030004072"
-    key    = "devops/agw/codepipeline.tfstate"
+    bucket = "terraform-tfstate-base-infra"
+    key    = "devops/asp/codepipeline.tfstate"
     region = "eu-west-2"
+
   }
 }
+

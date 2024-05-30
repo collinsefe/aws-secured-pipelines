@@ -1,24 +1,3 @@
-#This solution, non-production-ready template describes AWS Codepipeline based CICD Pipeline for terraform code deployment.
-#© 2023 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.
-#This AWS Content is provided subject to the terms of the AWS Customer Agreement available at
-#http://aws.amazon.com/agreement or other written agreement between Customer and either
-#Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
-
-# output "codecommit_name" {
-#   value       = module.codecommit_infrastructure_source_repo.repository_name
-#   description = "The name of the Codecommit repository"
-# }
-
-# output "codecommit_url" {
-#   value       = module.codecommit_infrastructure_source_repo.clone_url_http
-#   description = "The Clone URL of the Codecommit repository"
-# }
-
-# output "codecommit_arn" {
-#   value       = module.codecommit_infrastructure_source_repo.arn
-#   description = "The ARN of the Codecommit repository"
-# }
-
 output "codebuild_name" {
   value       = module.codebuild_terraform.name
   description = "The Name of the Codebuild Project"

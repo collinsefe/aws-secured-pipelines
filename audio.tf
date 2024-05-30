@@ -4,26 +4,16 @@
 #http://aws.amazon.com/agreement or other written agreement between Customer and either
 #Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
 
-terraform {
-  required_version = ">= 1.0.0"
 
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.20.1"
-    }
-  }
-
-}
 
 #Module for creating a new S3 bucket for storing pipeline artifacts
 module "s3_artifacts_bucket" {
   source                = "./modules/s3"
-  project_name          = var.project_name
+  project_name          = var.project_name_audio
   kms_key_arn           = module.codepipeline_kms.arn
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
   tags = {
-    Project_Name = var.project_name
+    Project_Name = var.project_name_audio
     Environment  = var.environment
     Account_ID   = local.account_id
     Region       = local.region
@@ -42,7 +32,7 @@ module "s3_artifacts_bucket" {
 #   repo_approvers_arn       = var.repo_approvers_arn
 #   kms_key_arn              = module.codepipeline_kms.arn
 #   tags = {
-#     Project_Name = var.project_name
+#     Project_Name = var.project_name_audio
 #     Environment  = var.environment
 #     Account_ID   = local.account_id
 #     Region       = local.region
@@ -57,7 +47,7 @@ module "codebuild_terraform" {
   # ]
   source = "./modules/codebuild"
 
-  project_name                        = var.project_name
+  project_name                        = var.project_name_audio
   role_arn                            = module.codepipeline_iam_role.role_arn
   s3_bucket_name                      = module.s3_artifacts_bucket.bucket
   build_projects                      = var.build_projects
@@ -68,7 +58,7 @@ module "codebuild_terraform" {
   builder_type                        = var.builder_type
   kms_key_arn                         = module.codepipeline_kms.arn
   tags = {
-    Project_Name = var.project_name
+    Project_Name = var.project_name_audio
     Environment  = var.environment
     Account_ID   = local.account_id
     Region       = local.region
@@ -79,7 +69,7 @@ module "codepipeline_kms" {
   source                = "./modules/kms"
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
   tags = {
-    Project_Name = var.project_name
+    Project_Name = var.project_name_audio
     Environment  = var.environment
     Account_ID   = local.account_id
     Region       = local.region
@@ -89,14 +79,14 @@ module "codepipeline_kms" {
 
 module "codepipeline_iam_role" {
   source                     = "./modules/iam-role"
-  project_name               = var.project_name
+  project_name               = var.project_name_audio
   create_new_role            = var.create_new_role
-  codepipeline_iam_role_name = var.create_new_role == true ? "${var.project_name}-codepipeline-role" : var.codepipeline_iam_role_name
+  codepipeline_iam_role_name = var.create_new_role == true ? "${var.project_name_audio}-codepipeline-role" : var.codepipeline_iam_role_name
   source_repository_name     = var.source_repo_name
   kms_key_arn                = module.codepipeline_kms.arn
   s3_bucket_arn              = module.s3_artifacts_bucket.arn
   tags = {
-    Project_Name = var.project_name
+    Project_Name = var.project_name_audio
     Environment  = var.environment
     Account_ID   = local.account_id
     Region       = local.region
@@ -110,7 +100,7 @@ module "codepipeline_terraform" {
   ]
   source = "./modules/codepipeline"
 
-  project_name          = var.project_name
+  project_name          = var.project_name_audio
   source_repo_name      = var.source_repo_name
   source_repo_branch    = var.source_repo_branch
   s3_bucket_name        = module.s3_artifacts_bucket.bucket
@@ -120,7 +110,7 @@ module "codepipeline_terraform" {
   source_provider       = var.source_provider
   codestar_name         = var.codestar_name
   tags = {
-    Project_Name = var.project_name
+    Project_Name = var.project_name_audio
     Environment  = var.environment
     Account_ID   = local.account_id
     Region       = local.region

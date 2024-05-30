@@ -1,9 +1,3 @@
-#This solution, non-production-ready template describes AWS Codepipeline based CICD Pipeline for terraform code deployment.
-#© 2023 Amazon Web Services, Inc. or its affiliates. All Rights Reserved.
-#This AWS Content is provided subject to the terms of the AWS Customer Agreement available at
-#http://aws.amazon.com/agreement or other written agreement between Customer and either
-#Amazon Web Services, Inc. or Amazon Web Services EMEA SARL or both.
-
 variable "project_name" {
   description = "Unique name for this project"
   type        = string
@@ -90,12 +84,24 @@ variable "build_project_source" {
 variable "source_provider" {
   description = "Provider type for Source stage e.g. GitHub, CodeCommit, BitBucket"
   type        = string
-  default     = "Bitbucket"
+  default     = "GitHub"
 }
 
 variable "codestar_name" {
   description = "Name for codestar connection"
   type        = string
-  default     = "BitBucketConnection"
+  default     = "GitHubConnection"
 }
 
+
+variable "project_name_audio" {
+  description = "Unique name for this project"
+  type        = string
+  default     = "ccoe"
+}
+
+variable "project_name_video" {
+  description = "Unique name for this project"
+  type        = string
+  default     = "devops"
+}
