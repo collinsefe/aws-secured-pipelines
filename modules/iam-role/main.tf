@@ -39,19 +39,9 @@ resource "aws_iam_policy" "codepipeline_policy" {
     {
       "Effect":"Allow",
       "Action": [
-        "s3:GetObject",
-        "s3:GetObjectVersion",
-        "s3:PutObjectAcl",
-        "s3:PutObject"
+        "s3:*"
       ],
       "Resource": "${var.s3_bucket_arn}/*"
-    },
-    {
-      "Effect":"Allow",
-      "Action": [
-        "s3:GetBucketVersioning"
-      ],
-      "Resource": "${var.s3_bucket_arn}"
     },
      {
       "Effect": "Allow",
@@ -69,7 +59,7 @@ resource "aws_iam_policy" "codepipeline_policy" {
       "Action": [
          "kms:*"
       ],
-      "Resource": "arn:aws:kms:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:*"
+      "Resource": "*"
     },
     {
       "Effect": "Allow",
