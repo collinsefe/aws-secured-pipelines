@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+    commands:
+      - echo "Installing dependencies..."
+      # - ./gradlew clean
+
+  pre_build:
+    commands:
+      - echo "Running tests..."
+      # - ./gradlew test
+
+  build:
+    commands:
+      - echo "Building the JAR file..."
+      # - ./gradlew build
+      - echo "Building Docker image..."
+      # - docker build -t $DOCKER_IMAGE .
+      - echo "Logging in to Amazon ECR..."
+      # - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - echo "Pushing Docker image..."
+      # - docker push $DOCKER_IMAGE
+
+# artifacts:
+#   files:
+    # - build/libs/*.jar  # Adjust to your JAR file path if necessary

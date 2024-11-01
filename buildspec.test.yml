@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11  # Adjust based on your requirements
+      nodejs: 14  # Adjust for your frontend
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      # - cd backend && ./gradlew clean build  # Build backend
+      # - cd ../frontend && npm install  # Install frontend dependencies
+  build:
+    commands:
+      - echo "Building application..."
+      # - cd backend && ./gradlew build
+      # - cd ../frontend && npm run build
+  post_build:
+    commands:
+      # - echo "Running tests..."
+      # - cd backend && ./gradlew test  # Adjust for your backend testing framework
+      # - cd ../frontend && npm test  # Adjust for your frontend testing framework
+# artifacts:
+#   files:
+#     # - backend/build/libs/*.jar  # Adjust as needed
+    # - frontend/build/**/*  # Adjust for your frontend build output
